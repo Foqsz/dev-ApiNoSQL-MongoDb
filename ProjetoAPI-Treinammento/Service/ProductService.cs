@@ -16,4 +16,19 @@ public class ProductService
 
         _productCollection = mongoDatabase.GetCollection<Product>(productService.Value.ProductCollectionName);
     } 
+
+    public async Task<List<Product>> GetAsync() => 
+        await _productCollection.Find(x => true).ToListAsync();
+
+    public async Task<Product> GetAsyncById(string id) =>
+        await _productCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+    public async Task CreateAsync(Product product) =>
+        await _productCollection.InsertOneAsync(product);
+
+    public async Task UpdateAsync(string id, Product product) =>
+        await _productCollection.ReplaceOneAsync(x => x.Id == id, product);
+
+    public async Task RemoveAsync(string id) =>
+        await _productCollection.DeleteOneAsync(x => x.Id == id);
 }
