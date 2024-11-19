@@ -2,33 +2,46 @@
 using MongoDB.Driver;
 using ProjetoAPI_Treinammento.Data;
 using ProjetoAPI_Treinammento.Models;
+using ProjetoAPI_Treinammento.Repository.Interface;
+using ProjetoAPI_Treinammento.Service.Interface;
 
 namespace ProjetoAPI_Treinammento.Service;
 
-public class ProductService
+public class ProductService : IProductService
 {
-    private readonly IMongoCollection<Product> _productCollection;
+    private readonly IProductRepository _productRepository;
 
-    public ProductService(IOptions<ProductDbSettings> productService)
+    public ProductService(IProductRepository productRepository)
     {
-        var mongoClient = new MongoClient(productService.Value.ConnectionString);
-        var mongoDatabase = mongoClient.GetDatabase(productService.Value.DataBaseName);
+        _productRepository = productRepository;
+    }
 
-        _productCollection = mongoDatabase.GetCollection<Product>(productService.Value.ProductCollectionName);
-    } 
+    public async Task<IEnumerable<Product>> GetAsyncProduct()
+    {
+        var productList = await _productRepository.GetAsync();
+        return productList;
+    }
 
-    public async Task<List<Product>> GetAsync() => 
-        await _productCollection.Find(x => true).ToListAsync();
+    public async Task<Product> GetAsyncProductById(string id)
+    {
+        var productById = await _productRepository.GetAsyncById(id);
+        return productById;
+    }
 
-    public async Task<Product> GetAsyncById(string id) =>
-        await _productCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+    public async Task<Product> PostProductService(Product product)
+    {
+        var createProduct = await _productRepository.CreateAsync(product);
+        return createProduct;
+    }
 
-    public async Task CreateAsync(Product product) =>
-        await _productCollection.InsertOneAsync(product);
+    public async Task<Product> UpdateProductService(string id, Product product)
+    {
+        var updateProduct = await _productRepository.UpdateAsync(id, product);
+        return updateProduct;
+    }
 
-    public async Task UpdateAsync(string id, Product product) =>
-        await _productCollection.ReplaceOneAsync(x => x.Id == id, product);
-
-    public async Task RemoveAsync(string id) =>
-        await _productCollection.DeleteOneAsync(x => x.Id == id);
+    public async Task DeleteProductService(string id)
+    {
+        await _productRepository.DeleteAsync(id);
+    }
 }
