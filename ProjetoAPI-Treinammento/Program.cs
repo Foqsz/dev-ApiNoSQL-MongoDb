@@ -1,7 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using ProjetoAPI_Treinammento.Data;
+using ProjetoAPI_Treinammento.Repository;
+using ProjetoAPI_Treinammento.Repository.Interface;
 using ProjetoAPI_Treinammento.Service;
+using ProjetoAPI_Treinammento.Service.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,8 @@ builder.Services.AddControllers();
 builder.Services.Configure<ProductDbSettings>
     (builder.Configuration.GetSection("FoqsDataBase"));
 
-builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<IProductService, ProductService>();
+builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

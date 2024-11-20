@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using ProjetoAPI_Treinammento.Models;
 using ProjetoAPI_Treinammento.Service;
+using ProjetoAPI_Treinammento.Service.Interface;
 
 namespace ProjetoAPI_Treinammento.Controllers;
 
@@ -11,9 +12,9 @@ namespace ProjetoAPI_Treinammento.Controllers;
 [ApiController]
 public class ProductController : ControllerBase
 {
-    private readonly ProductService _productService;
+    private readonly IProductService _productService;
 
-    public ProductController(ProductService productService)
+    public ProductController(IProductService productService)
     {
         _productService = productService;
     }
@@ -21,7 +22,7 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Product>>> GetProduct()
     {
-        var products = await _productService.GetAsync();
+        var products = await _productService.GetAsyncProduct();
 
         return Ok(products);
     }
@@ -34,7 +35,7 @@ public class ProductController : ControllerBase
             return NotFound("Id não localizado no MongoDB.");
         }
 
-        var productId = await _productService.GetAsyncById(id);
+        var productId = await _productService.GetAsyncProductById(id);
 
         if (productId == null)
         {
@@ -47,7 +48,7 @@ public class ProductController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Product>> PostProduct(Product product)
     {
-        await _productService.CreateAsync(product);
+        await _productService.PostProductService(product);
         return Ok(product);
     }
 
@@ -59,7 +60,7 @@ public class ProductController : ControllerBase
             return NotFound("Dados inválidos para alteração.");
         }
 
-        await _productService.UpdateAsync(id, product);
+        await _productService.UpdateProductService(id, product);
 
         return Ok(product);
     }
@@ -72,7 +73,7 @@ public class ProductController : ControllerBase
             return NotFound("Id não localizado no MongoDb");
         }
 
-        await _productService.RemoveAsync(id);
+        await _productService.DeleteProductService(id);
 
         return Ok(id);
     }
