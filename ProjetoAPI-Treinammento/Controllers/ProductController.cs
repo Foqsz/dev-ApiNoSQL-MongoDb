@@ -55,7 +55,7 @@ public class ProductController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<Product>> PutProduct(string id, Product product)
     {
-        if (product is null || id.Length < 24)
+        if (product is null || !ObjectId.TryParse(id, out _))
         {
             return NotFound("Dados inválidos para alteração.");
         }

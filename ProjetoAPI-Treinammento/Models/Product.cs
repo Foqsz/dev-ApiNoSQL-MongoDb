@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ProjetoAPI_Treinammento.Models;
 
 public class Product
-{  
+{   
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
