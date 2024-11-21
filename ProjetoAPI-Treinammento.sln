@@ -5,6 +5,12 @@ VisualStudioVersion = 17.11.35431.28
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoAPI-Treinammento", "ProjetoAPI-Treinammento\ProjetoAPI-Treinammento.csproj", "{E5168124-67BA-4305-94B4-65AADA91E81F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoApi-MVC", "ProjetoApi-MVC\ProjetoApi-MVC.csproj", "{50232539-A77B-467B-B0CF-0DF6768E841D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{A38E9EAE-E6A9-4B24-B092-E3FBD0999F70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{EFB2F0D8-883E-48EF-AA86-AAF3EAC5DA39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,17 @@ Global
 		{E5168124-67BA-4305-94B4-65AADA91E81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5168124-67BA-4305-94B4-65AADA91E81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5168124-67BA-4305-94B4-65AADA91E81F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50232539-A77B-467B-B0CF-0DF6768E841D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50232539-A77B-467B-B0CF-0DF6768E841D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50232539-A77B-467B-B0CF-0DF6768E841D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50232539-A77B-467B-B0CF-0DF6768E841D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5168124-67BA-4305-94B4-65AADA91E81F} = {EFB2F0D8-883E-48EF-AA86-AAF3EAC5DA39}
+		{50232539-A77B-467B-B0CF-0DF6768E841D} = {A38E9EAE-E6A9-4B24-B092-E3FBD0999F70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {408E1E7F-2A1F-4848-9004-F398DAEB91B2}
