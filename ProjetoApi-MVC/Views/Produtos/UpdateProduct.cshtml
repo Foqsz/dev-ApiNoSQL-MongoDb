@@ -1,0 +1,24 @@
+﻿@model ProjetoApi_MVC.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Atualizar Nome do Produto";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="UpdateProduct" method="post">
+    <div class="form-group">
+        <label for="Name">Nome do Produto</label>
+        <input type="text" class="form-control" id="Nome" name="Nome" value="@Model.Nome" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Atualizar Nome</button>
+</form>
+
+<!-- Exibir mensagens de erro do ModelState -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        <strong>Erro!</strong> Por favor, corrija os erros abaixo.
+    </div>
+}

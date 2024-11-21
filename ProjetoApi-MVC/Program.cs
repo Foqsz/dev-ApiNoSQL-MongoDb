@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient("ProductAPI", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7148/api/");
+    client.BaseAddress = new Uri("https://localhost:7148/");
     client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 

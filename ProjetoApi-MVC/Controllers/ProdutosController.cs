@@ -26,5 +26,36 @@ namespace ProjetoApi_MVC.Controllers
             return View(produtos);  
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateProduct(string id)
+        {
+            var product = await _productService.GetAsyncProductById(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(string id, ProductViewModel product)
+        {
+            if (ModelState.IsValid)
+            {  
+                var existingProduct = await _productService.GetAsyncProductById(id);
+
+                if (existingProduct != null)
+                { 
+                    await _productService.UpdateProductService(id, product);  
+                    return RedirectToAction("Index");  
+                }
+            }
+
+            return View(product);
+        }
+
+
     }
 }
