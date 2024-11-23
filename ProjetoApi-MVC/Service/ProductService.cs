@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson.Serialization;
+using Newtonsoft.Json;
 using ProjetoApi_MVC.Models;
 using ProjetoApi_MVC.Service.Interface;
+using System.Text;
 using System.Text.Json;
 
 namespace ProjetoApi_MVC.Service;
@@ -56,17 +58,34 @@ public class ProductService : IProductService
         }
 
         throw new HttpRequestException($"Erro ao buscar produto Id {id}: {response.StatusCode}");
-    } 
+    }
 
     public async Task<ProductViewModel> PostProductService(ProductViewModel product)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductAPI");
+
+        var url = $"{apiEndPoint}";
+
+        StringContent content = new StringContent(System.Text.Json.JsonSerializer.Serialize(product), Encoding.UTF8, "application/json");
+
+        using (var response = await client.PostAsync(url, content))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                return await System.Text.Json.JsonSerializer.DeserializeAsync<ProductViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
     public async Task<ProductViewModel> UpdateProductService(string id, ProductViewModel product)
     {
         var client = _httpClientFactory.CreateClient("ProductAPI");
-          
+
         var url = $"{apiEndPoint}?id={id}";
 
         ProductViewModel productUpdated = new ProductViewModel();
@@ -86,9 +105,20 @@ public class ProductService : IProductService
         return productUpdated;
     }
 
-
-    public async Task DeleteProductService(string id)
+    public async Task<bool> DeleteProductService(string id)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("ProductAPI");
+
+        var url = $"{apiEndPoint}/{id}";  
+
+        using (var response = await client.DeleteAsync(url))  
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+        }
+        return false;
     }
+
 }
