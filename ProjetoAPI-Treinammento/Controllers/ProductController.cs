@@ -65,7 +65,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult<Product>> RemoveProduct(string id)
     {
         if (!ObjectId.TryParse(id, out _))
