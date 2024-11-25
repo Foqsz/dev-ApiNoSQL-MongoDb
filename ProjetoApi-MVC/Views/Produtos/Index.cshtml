@@ -1,5 +1,10 @@
 ﻿ @model IEnumerable<ProjetoApi_MVC.Models.ProductViewModel>
 
+@{
+    ViewData["Title"] = "Gerenciar Produtos";
+}
+<h1>@ViewData["Title"]</h1>
+
 <h2>Products</h2>
 <hr />
 
@@ -39,11 +44,11 @@
                         @Html.DisplayFor(modelItem => item.Nome)
                     </td>
                     <td>
-                        <a asp-action="UpdateProduct" asp-route-id="@item.Id" title="Edita" class="btn btn-warning">
-                            <span class="fas fa-edit"></span>
+                        <a asp-action="UpdateProduct" asp-route-id="@item.Id" title="Editar" class="btn btn-warning btn-sm">
+                            <span class="fas fa-edit"></span> Editar
                         </a>
-                        <a asp-action="DeleteProduct" asp-route-id="@item.Id" title="Deleta" class="btn btn-danger">
-                            <span class="fas fa-trash-alt"></span>
+                        <a asp-action="DeleteProduct" asp-route-id="@item.Id" title="Deletar" class="btn btn-danger btn-sm">
+                            <span class="fas fa-trash-alt"></span> Deletar
                         </a>
                     </td>
                 </tr>

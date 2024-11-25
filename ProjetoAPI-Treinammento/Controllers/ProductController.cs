@@ -52,7 +52,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<ActionResult<Product>> PutProduct(string id, Product product)
     {
         if (product is null || !ObjectId.TryParse(id, out _))

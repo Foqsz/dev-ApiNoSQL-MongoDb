@@ -86,7 +86,7 @@ public class ProductService : IProductService
     {
         var client = _httpClientFactory.CreateClient("ProductAPI");
 
-        var url = $"{apiEndPoint}?id={id}";
+        var url = $"{apiEndPoint}/{id}";
 
         ProductViewModel productUpdated = new ProductViewModel();
 
