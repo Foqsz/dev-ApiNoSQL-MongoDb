@@ -33,6 +33,13 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product> CreateAsync(Product product)
     {
+        var productExist = await _productCollection.FindAsync(p => p.Nome == product.Nome);
+
+        if (productExist != null)
+        {
+            throw new Exception("Já existe um produto com esse nome, tente outro.");
+        }
+
         await _productCollection.InsertOneAsync(product);
         return product;
     }

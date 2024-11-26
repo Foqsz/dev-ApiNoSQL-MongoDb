@@ -1,0 +1,17 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+
+GET https://localhost:7148/api/Product
+
+### 
+
+POST https://localhost:7148/api/Product
+Content-Type application/json
+ 
+  {
+      "nome": "new"
+  }
+
+
+###
+

@@ -29,7 +29,7 @@ public class ProductService : IProductService
     }
 
     public async Task<Product> PostProductService(Product product)
-    {
+    {  
         var createProduct = await _productRepository.CreateAsync(product);
         return createProduct;
     }
