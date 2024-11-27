@@ -33,7 +33,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<Product> CreateAsync(Product product)
     {
-        var productExist = await _productCollection.FindAsync(p => p.Nome == product.Nome);
+        var productExist = await _productCollection.Find(p => p.Nome == product.Nome).FirstOrDefaultAsync();
 
         if (productExist != null)
         {
@@ -45,6 +45,13 @@ public class ProductRepository : IProductRepository
     }
     public async Task<Product> UpdateAsync(string id, Product product)
     {
+        var productExist = await _productCollection.Find(p => p.Nome == product.Nome).FirstOrDefaultAsync();
+
+        if (productExist != null)
+        {
+            throw new Exception("Não é possivel atualizar para esse nome pois ele já existe.");
+        }
+
         await _productCollection.ReplaceOneAsync(x => x.Id == id, product);
         return product;
     }
