@@ -29,13 +29,23 @@ public class ProductService : IProductService
     }
 
     public async Task<Product> PostProductService(Product product)
-    {  
+    {
+        if (product.AnoDeFabricacao < 2015)
+        {
+            throw new Exception("Ano inválido. Aceitando apenas 2015 em diante.");
+        }
+
         var createProduct = await _productRepository.CreateAsync(product);
         return createProduct;
     }
 
     public async Task<Product> UpdateProductService(string id, Product product)
     {
+        if (product.AnoDeFabricacao < 2015)
+        {
+            throw new Exception("Ano inválido. Aceitando apenas 2015 em diante.");
+        }
+
         var updateProduct = await _productRepository.UpdateAsync(id, product);
         return updateProduct;
     }

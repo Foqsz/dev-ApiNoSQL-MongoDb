@@ -34,7 +34,7 @@ public class ProductRepository : IProductRepository
     public async Task<Product> CreateAsync(Product product)
     {
         var productExist = await _productCollection.Find(p => p.Nome == product.Nome).FirstOrDefaultAsync();
-
+  
         if (productExist != null)
         {
             throw new Exception("Já existe um produto com esse nome, tente outro.");
@@ -50,8 +50,8 @@ public class ProductRepository : IProductRepository
 
         if (productExist != null && dataExist != null)
         {
-            throw new Exception("Não é possivel atualizar para esse nome pois ele já existe.");
-        }
+            throw new Exception("Não é possivel atualizar para essas requisições.");
+        } 
 
         await _productCollection.ReplaceOneAsync(x => x.Id == id, product);
         return product;
