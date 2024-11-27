@@ -11,4 +11,7 @@ public class Product
 
     [BsonElement("Nome")]
     public string Nome { get; set; } = string.Empty;
+
+    [BsonElement("Fabricacao")]
+    public int AnoDeFabricacao { get; set; }
 }
