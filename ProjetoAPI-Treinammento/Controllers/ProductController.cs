@@ -20,6 +20,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<Product>>> GetProduct()
     {
         var products = await _productService.GetAsyncProduct();
@@ -28,6 +29,8 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> GetProductById(string id)
     {
         if (!ObjectId.TryParse(id, out _))
@@ -46,6 +49,8 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Product>> PostProduct(Product product)
     {
         await _productService.PostProductService(product);
@@ -53,6 +58,8 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> PutProduct(string id, Product product)
     {
         if (product is null || !ObjectId.TryParse(id, out _))
@@ -66,6 +73,8 @@ public class ProductController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> RemoveProduct(string id)
     {
         if (!ObjectId.TryParse(id, out _))
