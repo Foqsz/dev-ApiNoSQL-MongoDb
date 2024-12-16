@@ -19,12 +19,7 @@ namespace ProjetoApi_MVC.Controllers
         {
             var produtos = await _productService.GetAsyncProduct();
 
-            if (produtos is null)
-            {
-                return View("Error");
-            }
-
-            return View(produtos);
+            return produtos is null ? View("Error") : View(produtos);
         }
 
         [HttpGet]
@@ -43,18 +38,13 @@ namespace ProjetoApi_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(string id, ProductViewModel product)
         {
-            if (ModelState.IsValid)
-            {
-                var existingProduct = await _productService.GetAsyncProductById(id);
+            if (!ModelState.IsValid) return View(product);
+            var existingProduct = await _productService.GetAsyncProductById(id);
 
-                if (existingProduct != null)
-                {
-                    await _productService.UpdateProductService(id, product);
-                    return RedirectToAction("Index");
-                }
-            }
+            if (existingProduct == null) return View(product);
+            await _productService.UpdateProductService(id, product);
+            return RedirectToAction("Index");
 
-            return View(product);
         }
 
         [HttpGet]
@@ -68,12 +58,9 @@ namespace ProjetoApi_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductViewModel product)
         {
-            if (ModelState.IsValid)
-            {
-                var newProduct = await _productService.PostProductService(product);
-                return RedirectToAction("Index");
-            }
-            return View(product);
+            if (!ModelState.IsValid) return View(product);
+            var newProduct = await _productService.PostProductService(product);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -91,12 +78,9 @@ namespace ProjetoApi_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(ProductViewModel product)
         {
-            if (ModelState.IsValid)
-            {
-                var deleteProduct = await _productService.DeleteProductService(product.Id);
-                return RedirectToAction("Index");
-            }
-            return View();
+            if (!ModelState.IsValid) return View();
+            var deleteProduct = await _productService.DeleteProductService(product.Id);
+            return RedirectToAction("Index");
         }
     }
 }
