@@ -23,8 +23,15 @@ public class ProductController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<Product>>> GetProduct()
     {
-        var products = await _productService.GetAsyncProduct();
-        return StatusCode(StatusCodes.Status200OK, products);
+        try
+        {
+            var products = await _productService.GetAsyncProduct();
+            return StatusCode(StatusCodes.Status200OK, products);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter produtos: {ex.Message}");
+        }
     }
 
     [HttpGet("{id}")]
@@ -32,28 +39,47 @@ public class ProductController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> GetProductById(string id)
     {
-        if (!ObjectId.TryParse(id, out _))
+        try
         {
-            return StatusCode(StatusCodes.Status404NotFound, "Id não localizado no MongoDB.");
+            if (!ObjectId.TryParse(id, out _))
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Id não localizado no MongoDB.");
+            }
+
+            var productId = await _productService.GetAsyncProductById(id);
+
+            if (productId == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Produto não encontrado.");
+            }
+
+            return StatusCode(StatusCodes.Status200OK, productId);
         }
-
-        var productId = await _productService.GetAsyncProductById(id);
-
-        if (productId == null)
+        catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status404NotFound, "Produto não encontrado.");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter produto: {ex.Message}");
         }
-
-        return StatusCode(StatusCodes.Status200OK, productId);
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Product>> PostProduct(Product product)
+    [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Product>> PostProduct([FromBody] Product product)
     {
-        await _productService.PostProductService(product);
-        return StatusCode(StatusCodes.Status200OK, product);
+        try
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var createdProduct = await _productService.PostProductService(product);
+            return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao criar produto: {ex.Message}");
+        }
     }
 
     [HttpPut("{id}")]
@@ -61,13 +87,20 @@ public class ProductController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> PutProduct(string id, Product product)
     {
-        if (product is null || !ObjectId.TryParse(id, out _))
+        try
         {
-            return StatusCode(StatusCodes.Status404NotFound, "Dados inválidos para alteração.");
-        }
+            if (product is null || !ObjectId.TryParse(id, out _))
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Dados inválidos para alteração.");
+            }
 
-        await _productService.UpdateProductService(id, product);
-        return StatusCode(StatusCodes.Status200OK, product);
+            await _productService.UpdateProductService(id, product);
+            return StatusCode(StatusCodes.Status200OK, product);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar produto: {ex.Message}");
+        }
     }
 
     [HttpDelete("{id}")]
@@ -75,12 +108,19 @@ public class ProductController : ControllerBase
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Product>> RemoveProduct(string id)
     {
-        if (!ObjectId.TryParse(id, out _))
+        try
         {
-            return StatusCode(StatusCodes.Status404NotFound, "Id não localizado no MongoDb");
-        }
+            if (!ObjectId.TryParse(id, out _))
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Id não localizado no MongoDb");
+            }
 
-        await _productService.DeleteProductService(id);
-        return StatusCode(StatusCodes.Status200OK, id);
+            await _productService.DeleteProductService(id);
+            return StatusCode(StatusCodes.Status200OK, id);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar produto: {ex.Message}");
+        }
     }
 }
