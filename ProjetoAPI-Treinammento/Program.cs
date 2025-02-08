@@ -1,5 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using ProjetoAPI_Treinammento.Data;
 using ProjetoAPI_Treinammento.Repository;
 using ProjetoAPI_Treinammento.Repository.Interface;

@@ -24,8 +24,7 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<List<Product>>> GetProduct()
     {
         var products = await _productService.GetAsyncProduct();
-
-        return Ok(products);
+        return StatusCode(StatusCodes.Status200OK, products);
     }
 
     [HttpGet("{id}")]
@@ -35,17 +34,17 @@ public class ProductController : ControllerBase
     {
         if (!ObjectId.TryParse(id, out _))
         {
-            return NotFound("Id não localizado no MongoDB.");
+            return StatusCode(StatusCodes.Status404NotFound, "Id não localizado no MongoDB.");
         }
 
         var productId = await _productService.GetAsyncProductById(id);
 
         if (productId == null)
         {
-            return NotFound("Produto não encontrado.");
+            return StatusCode(StatusCodes.Status404NotFound, "Produto não encontrado.");
         }
 
-        return Ok(productId);
+        return StatusCode(StatusCodes.Status200OK, productId);
     }
 
     [HttpPost]
@@ -54,7 +53,7 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<Product>> PostProduct(Product product)
     {
         await _productService.PostProductService(product);
-        return Ok(product);
+        return StatusCode(StatusCodes.Status200OK, product);
     }
 
     [HttpPut("{id}")]
@@ -64,12 +63,11 @@ public class ProductController : ControllerBase
     {
         if (product is null || !ObjectId.TryParse(id, out _))
         {
-            return NotFound("Dados inválidos para alteração.");
+            return StatusCode(StatusCodes.Status404NotFound, "Dados inválidos para alteração.");
         }
 
         await _productService.UpdateProductService(id, product);
-
-        return Ok(product);
+        return StatusCode(StatusCodes.Status200OK, product);
     }
 
     [HttpDelete("{id}")]
@@ -79,11 +77,10 @@ public class ProductController : ControllerBase
     {
         if (!ObjectId.TryParse(id, out _))
         {
-            return NotFound("Id não localizado no MongoDb");
+            return StatusCode(StatusCodes.Status404NotFound, "Id não localizado no MongoDb");
         }
 
         await _productService.DeleteProductService(id);
-
-        return Ok(id);
+        return StatusCode(StatusCodes.Status200OK, id);
     }
 }

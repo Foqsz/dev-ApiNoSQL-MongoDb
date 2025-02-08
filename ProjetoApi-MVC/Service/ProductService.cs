@@ -43,8 +43,7 @@ public class ProductService : IProductService
     public async Task<ProductViewModel> GetAsyncProductById(string id)
     {
         var client = _httpClientFactory.CreateClient("ProductAPI");
-
-        // Montando a URL com o ID como parte do caminho da URL
+         
         var url = $"{apiEndPoint}/{id}";
 
         var response = await client.GetAsync(url);
@@ -109,9 +108,9 @@ public class ProductService : IProductService
     {
         var client = _httpClientFactory.CreateClient("ProductAPI");
 
-        var url = $"{apiEndPoint}/{id}";  
+        var url = $"{apiEndPoint}/{id}";
 
-        using (var response = await client.DeleteAsync(url))  
+        using (var response = await client.DeleteAsync(url))
         {
             if (response.IsSuccessStatusCode)
             {
