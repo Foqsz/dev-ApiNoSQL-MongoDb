@@ -19,6 +19,10 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
+    /// <summary>
+    /// Retrieves all products.
+    /// </summary>
+    /// <returns>A list of products.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<Product>>> GetProduct()
@@ -34,6 +38,11 @@ public class ProductController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Retrieves a product by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the product.</param>
+    /// <returns>The product with the specified ID.</returns>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -61,6 +70,11 @@ public class ProductController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Creates a new product.
+    /// </summary>
+    /// <param name="product">The product to create.</param>
+    /// <returns>The created product.</returns>
     [HttpPost]
     [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -82,6 +96,12 @@ public class ProductController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Updates an existing product.
+    /// </summary>
+    /// <param name="id">The ID of the product to update.</param>
+    /// <param name="product">The updated product data.</param>
+    /// <returns>The updated product.</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -103,6 +123,11 @@ public class ProductController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Deletes a product by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the product to delete.</param>
+    /// <returns>The ID of the deleted product.</returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
