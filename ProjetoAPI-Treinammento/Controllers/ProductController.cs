@@ -25,11 +25,12 @@ public class ProductController : ControllerBase
     /// <returns>A list of products.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<Product>>> GetProduct()
+    public async Task<ActionResult<List<Product>>>GetProduct()
     {
         try
         {
             var products = await _productService.GetAsyncProduct();
+            await Task.Delay(3000);
             return StatusCode(StatusCodes.Status200OK, products);
         }
         catch (Exception ex)
@@ -46,7 +47,7 @@ public class ProductController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Product>> GetProductById(string id)
+    public async Task<ActionResult<Product>> GetProductById([FromRoute] string id)
     {
         try
         {
@@ -105,7 +106,7 @@ public class ProductController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Product>> PutProduct(string id, Product product)
+    public async Task<ActionResult<Product>> PutProduct([FromRoute] string id, [FromBody] Product product)
     {
         try
         {
@@ -131,7 +132,7 @@ public class ProductController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Product>> RemoveProduct(string id)
+    public async Task<ActionResult<Product>> RemoveProduct([FromRoute] string id)
     {
         try
         {
